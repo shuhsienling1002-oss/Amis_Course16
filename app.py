@@ -18,7 +18,7 @@ def safe_play_audio(text):
     """語音播放安全模式"""
     try:
         from gtts import gTTS
-        # 使用印尼語 (id) 發音
+        # 使用印尼語 (id) 發音，最接近南島語韻律
         tts = gTTS(text=text, lang='id')
         fp = BytesIO()
         tts.write_to_fp(fp)
@@ -27,9 +27,9 @@ def safe_play_audio(text):
         st.caption(f"🔇 (語音生成暫時無法使用)")
 
 # --- 0. 系統配置 ---
-st.set_page_config(page_title="Unit 16: O Pa-pa-nay", page_icon="🛒", layout="centered")
+st.set_page_config(page_title="Unit 16: O Patiyamay", page_icon="🛒", layout="centered")
 
-# --- CSS 美化 (市集活力橘) ---
+# --- CSS 美化 ---
 st.markdown("""
     <style>
     body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
@@ -68,26 +68,26 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. 資料庫 (Unit 16) ---
+# --- 2. 資料庫 (Unit 16 辭典校對版) ---
 vocab_data = [
-    {"amis": "Patiyamay", "chi": "商店 / 市場", "icon": "🏪", "source": "Unit 13"},
+    {"amis": "Patiyamay", "chi": "商店 / 市場", "icon": "🏪", "source": "Dict: Tiyam"},
     {"amis": "Payso", "chi": "錢", "icon": "💰", "source": "Unit 11"},
-    {"amis": "'Aca", "chi": "價格 / 價錢", "icon": "🏷️", "source": "Row 1871"},
-    {"amis": "Miwic", "chi": "便宜", "icon": "📉", "source": "Basic"},
-    {"amis": "Po'ot", "chi": "貴", "icon": "📈", "source": "Basic"}, # 或使用 Tekes
-    {"amis": "Cakay", "chi": "買", "icon": "🛒", "source": "Basic"},
-    {"amis": "Paca'of", "chi": "找錢 / 回答", "icon": "💵", "source": "Basic"},
-    {"amis": "Dateng", "chi": "菜 / 蔬菜", "icon": "🥬", "source": "Row 7640"},
+    {"amis": "'Aca", "chi": "價格 / 價錢", "icon": "🏷️", "source": "Dict: Price"},
+    {"amis": "Matekes", "chi": "貴", "icon": "📈", "source": "Dict: Expensive"}, # 修正：Matekes
+    {"amis": "Koemih", "chi": "便宜 (字面義:軟)", "icon": "📉", "source": "Dict: Soft/Cheap"}, # 修正：Koemih
+    {"amis": "Micakay", "chi": "買", "icon": "🛒", "source": "Dict: Buy"},
+    {"amis": "Pacakay", "chi": "賣", "icon": "🤝", "source": "Dict: Sell"},
+    {"amis": "Dateng", "chi": "蔬菜", "icon": "🥬", "source": "Row 7640"},
     {"amis": "Titi", "chi": "肉", "icon": "🥩", "source": "Row 11"},
     {"amis": "Foting", "chi": "魚", "icon": "🐟", "source": "Unit 4"},
 ]
 
 sentences = [
     {"amis": "Pina ko 'aca?", "chi": "價錢多少？(多少錢)", "icon": "❓", "source": "Row 1871"},
-    {"amis": "Micakay kako to dateng.", "chi": "我買菜。", "icon": "🥬", "source": "Mi-cakay + Dateng"},
-    {"amis": "Tadapo'ot.", "chi": "太貴了。", "icon": "💸", "source": "Tada (太) + Po'ot"},
-    {"amis": "Pina ko payso no miso?", "chi": "你有多少錢？", "icon": "💰", "source": "Unit 11"},
-    {"amis": "Tayra ci ina i patiyamay.", "chi": "媽媽去市場。", "icon": "🚶‍♀️", "source": "Unit 13"},
+    {"amis": "Micakay kako to dateng.", "chi": "我買菜。", "icon": "🥬", "source": "Mi-cakay (Buy)"},
+    {"amis": "Tada matekes.", "chi": "太貴了。", "icon": "💸", "source": "Matekes (Expensive)"}, # 修正例句
+    {"amis": "Koemih ko 'aca.", "chi": "價格很便宜。", "icon": "📉", "source": "Koemih (Soft/Cheap)"}, # 修正例句
+    {"amis": "Tayra ci ina i patiyamay.", "chi": "媽媽去市場。", "icon": "🚶‍♀️", "source": "Dict: Patiyamay"},
 ]
 
 # --- 3. 隨機題庫 (定義) ---
@@ -107,25 +107,25 @@ raw_quiz_pool = [
         "hint": "Micakay 是買 (主動)"
     },
     {
-        "q": "Tadapo'ot! (老闆開價太高時你會說...)",
-        "audio": "Tadapo'ot",
+        "q": "Tada matekes! (老闆開價太高時你會說...)",
+        "audio": "Tada matekes",
         "options": ["太貴了", "太便宜了", "太好吃了"],
         "ans": "太貴了",
-        "hint": "Po'ot 是貴"
+        "hint": "Matekes 是貴 (硬)"
     },
     {
         "q": "單字測驗：Patiyamay",
         "audio": "Patiyamay",
         "options": ["商店 / 市場", "學校", "家"],
         "ans": "商店 / 市場",
-        "hint": "買東西的地方"
+        "hint": "做生意(Tiyam)的地方"
     },
     {
-        "q": "單字測驗：'Aca",
-        "audio": "'Aca",
-        "options": ["價格", "錢", "物品"],
-        "ans": "價格",
-        "hint": "問多少錢時用 Pina ko 'aca"
+        "q": "單字測驗：Koemih",
+        "audio": "Koemih",
+        "options": ["便宜 (價格軟)", "貴 (價格硬)", "生氣"],
+        "ans": "便宜 (價格軟)",
+        "hint": "字面意思是柔軟，形容價格不貴"
     },
     {
         "q": "Tayra ci ina i patiyamay.",
@@ -135,11 +135,11 @@ raw_quiz_pool = [
         "hint": "Tayra 是去"
     },
     {
-        "q": "「買」的阿美語怎麼說？",
+        "q": "「賣」東西的阿美語怎麼說？",
         "audio": None,
-        "options": ["Cakay", "Pacakay", "Komaen"],
-        "ans": "Cakay",
-        "hint": "Mi-cakay 是去買"
+        "options": ["Pacakay", "Micakay", "Komaen"],
+        "ans": "Pacakay",
+        "hint": "Pa- 開頭通常有「給」的意思 -> 給人買 -> 賣"
     }
 ]
 
@@ -162,8 +162,8 @@ if 'init' not in st.session_state:
     st.session_state.init = True
 
 # --- 5. 主介面 ---
-st.markdown("<h1 style='text-align: center; color: #E65100;'>Unit 16: O Pa-pa-nay</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666;'>市場買賣 (Shopping)</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: #E65100;'>Unit 16: O Patiyamay</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666;'>市場買賣 (Corrected Version)</p>", unsafe_allow_html=True)
 
 tab1, tab2 = st.tabs(["📚 詞彙與句型", "🎲 隨機挑戰"])
 
@@ -212,6 +212,7 @@ with tab2:
             if st.button("🎧 播放題目音檔", key=f"btn_audio_{st.session_state.current_q_idx}"):
                 safe_play_audio(q_data['audio'])
         
+        # 使用洗牌後的選項
         unique_key = f"q_{st.session_state.quiz_id}_{st.session_state.current_q_idx}"
         user_choice = st.radio("請選擇正確答案：", q_data['shuffled_options'], key=unique_key)
         
@@ -232,7 +233,7 @@ with tab2:
         <div style='text-align: center; padding: 30px; background-color: #FFE0B2; border-radius: 20px; margin-top: 20px;'>
             <h1 style='color: #E65100;'>🏆 挑戰成功！</h1>
             <h3 style='color: #333;'>本次得分：{st.session_state.score}</h3>
-            <p>你已經學會買東西了！</p>
+            <p>你已經學會正確的買賣用語了！</p>
         </div>
         """, unsafe_allow_html=True)
         
