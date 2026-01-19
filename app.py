@@ -18,7 +18,7 @@ def safe_play_audio(text):
     """語音播放安全模式"""
     try:
         from gtts import gTTS
-        # 使用印尼語 (id) 發音，最接近南島語韻律
+        # 使用印尼語 (id) 發音
         tts = gTTS(text=text, lang='id')
         fp = BytesIO()
         tts.write_to_fp(fp)
@@ -68,29 +68,29 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# --- 2. 資料庫 (Unit 16 辭典校對版) ---
+# --- 2. 資料庫 (Unit 16 校正版) ---
 vocab_data = [
     {"amis": "Patiyamay", "chi": "商店 / 市場", "icon": "🏪", "source": "Dict: Tiyam"},
     {"amis": "Payso", "chi": "錢", "icon": "💰", "source": "Unit 11"},
-    {"amis": "'Aca", "chi": "價格 / 價錢", "icon": "🏷️", "source": "Dict: Price"},
-    {"amis": "Matekes", "chi": "貴", "icon": "📈", "source": "Dict: Expensive"}, # 修正：Matekes
-    {"amis": "Koemih", "chi": "便宜 (字面義:軟)", "icon": "📉", "source": "Dict: Soft/Cheap"}, # 修正：Koemih
+    {"amis": "'Aca", "chi": "價格 / 價錢", "icon": "🏷️", "source": "Row 2259"},
+    {"amis": "Matekes", "chi": "貴", "icon": "📈", "source": "Row 2259"},
+    {"amis": "Caay ka tekes", "chi": "便宜 (不貴)", "icon": "📉", "source": "Grammar (Negation)"},
     {"amis": "Micakay", "chi": "買", "icon": "🛒", "source": "Dict: Buy"},
     {"amis": "Pacakay", "chi": "賣", "icon": "🤝", "source": "Dict: Sell"},
     {"amis": "Dateng", "chi": "蔬菜", "icon": "🥬", "source": "Row 7640"},
     {"amis": "Titi", "chi": "肉", "icon": "🥩", "source": "Row 11"},
-    {"amis": "Foting", "chi": "魚", "icon": "🐟", "source": "Unit 4"},
+    {"amis": "Po'ot", "chi": "刀子 (易混淆詞)", "icon": "🔪", "source": "Row 3205"}, # 特別列出以釐清
 ]
 
 sentences = [
-    {"amis": "Pina ko 'aca?", "chi": "價錢多少？(多少錢)", "icon": "❓", "source": "Row 1871"},
-    {"amis": "Micakay kako to dateng.", "chi": "我買菜。", "icon": "🥬", "source": "Mi-cakay (Buy)"},
-    {"amis": "Tada matekes.", "chi": "太貴了。", "icon": "💸", "source": "Matekes (Expensive)"}, # 修正例句
-    {"amis": "Koemih ko 'aca.", "chi": "價格很便宜。", "icon": "📉", "source": "Koemih (Soft/Cheap)"}, # 修正例句
+    {"amis": "Pina ko 'aca?", "chi": "價錢多少？(多少錢)", "icon": "❓", "source": "Row 1871 (Modified)"},
+    {"amis": "Micakay kako to dateng.", "chi": "我買菜。", "icon": "🥬", "source": "Mi-cakay"},
+    {"amis": "Tada matekes.", "chi": "太貴了。", "icon": "💸", "source": "Row 2259 (Modified)"},
+    {"amis": "Caay ka tekes ko 'aca.", "chi": "價格很便宜(不貴)。", "icon": "📉", "source": "Grammar"},
     {"amis": "Tayra ci ina i patiyamay.", "chi": "媽媽去市場。", "icon": "🚶‍♀️", "source": "Dict: Patiyamay"},
 ]
 
-# --- 3. 隨機題庫 (定義) ---
+# --- 3. 隨機題庫 (同步更新) ---
 raw_quiz_pool = [
     {
         "q": "Pina ko 'aca? (這句話是什麼意思？)",
@@ -111,7 +111,7 @@ raw_quiz_pool = [
         "audio": "Tada matekes",
         "options": ["太貴了", "太便宜了", "太好吃了"],
         "ans": "太貴了",
-        "hint": "Matekes 是貴 (硬)"
+        "hint": "Matekes 是貴 (Row 2259)"
     },
     {
         "q": "單字測驗：Patiyamay",
@@ -121,11 +121,11 @@ raw_quiz_pool = [
         "hint": "做生意(Tiyam)的地方"
     },
     {
-        "q": "單字測驗：Koemih",
-        "audio": "Koemih",
-        "options": ["便宜 (價格軟)", "貴 (價格硬)", "生氣"],
-        "ans": "便宜 (價格軟)",
-        "hint": "字面意思是柔軟，形容價格不貴"
+        "q": "單字測驗：Po'ot (易混淆詞)",
+        "audio": "Po'ot",
+        "options": ["刀子", "貴", "便宜"],
+        "ans": "刀子",
+        "hint": "注意！Po'ot 是刀子，不是貴喔！(Row 3205)"
     },
     {
         "q": "Tayra ci ina i patiyamay.",
@@ -163,7 +163,7 @@ if 'init' not in st.session_state:
 
 # --- 5. 主介面 ---
 st.markdown("<h1 style='text-align: center; color: #E65100;'>Unit 16: O Patiyamay</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666;'>市場買賣 (Corrected Version)</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #666;'>市場買賣 (Data Verified)</p>", unsafe_allow_html=True)
 
 tab1, tab2 = st.tabs(["📚 詞彙與句型", "🎲 隨機挑戰"])
 
